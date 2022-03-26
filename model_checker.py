@@ -11,17 +11,18 @@ from parsing.token import Token, TokenType
 
 # A model checker for LTL on regular paths
 
+def modelcheck(m,f):
+	print("File ", m, " result: ", evaluate(m,f))
 
 def evaluate(path,form):
-	# You do not have to use evaluate as it is here;
-	# you can implement modelcheck however you like.
-	# This is only a hint.
-	pass
-	
-
-def modelcheck(m,f):
-	return evaluate(m,f)[0]
-
+	ast = parse(form)
+	subformulas = _extract_subformulas(ast,[])
+	parsedPath = getpath(path)
+	states = parsedPath.path
+	loopIndex = parsedPath.total - parsedPath.loop
+	table = _formula_expansion(subformulas, states, loopIndex)
+	formula,truth = table[len(table) - 1]
+	return all(truth)
 
 def _extract_subformulas(ast,subformulas):
 	subformulas.insert(0,ast)
@@ -85,12 +86,3 @@ def _find_subformula(formula,currentTable):
 	for subformula,truthTable in currentTable:
 		if formula == subformula:
 			return truthTable
-
-ast = parse("employee_right W employee_trans")
-subformulas = _extract_subformulas(ast,[])
-path = getpath("paths/path0.txt")
-states = path.path
-loopIndex = path.total - path.loop
-print(loopIndex)
-table = _formula_expansion(subformulas, states, loopIndex)
-print(table)
