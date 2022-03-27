@@ -1,3 +1,5 @@
+# Minimum set of operators
+
 def NOT_handler(subformula):
     truthTable = []
     for truth in subformula:
@@ -13,12 +15,6 @@ def X_handler(subformula,loopIndex):
 
 def AND_handler(leftFormula,rightFormula):
     return [a and b for a, b in zip(leftFormula, rightFormula)]
-
-def OR_handler(leftFormula, rightFormula):
-    return NOT_handler(AND_handler(NOT_handler(leftFormula), NOT_handler(rightFormula)))
-
-def IMPL_handler(leftFormula, rightFormula):
-    return OR_handler(NOT_handler(leftFormula), rightFormula)
 
 def U_handler(leftFormula,rightFormula,loopIndex):
     truthTable = []
@@ -39,11 +35,19 @@ def U_handler(leftFormula,rightFormula,loopIndex):
         toCompile -= 1
     return truthTable
 
-def R_handler(leftFormula,rightFormula,loopIndex):
-    return NOT_handler(U_handler(NOT_handler(leftFormula),NOT_handler(rightFormula),loopIndex))
+# Derived operators
+
+def OR_handler(leftFormula, rightFormula):
+    return NOT_handler(AND_handler(NOT_handler(leftFormula), NOT_handler(rightFormula)))
+
+def IMPL_handler(leftFormula, rightFormula):
+    return OR_handler(NOT_handler(leftFormula), rightFormula)
 
 def W_handler(leftFormula,rightFormula,loopIndex):
     return R_handler(rightFormula, OR_handler(leftFormula,rightFormula),loopIndex)
+
+def R_handler(leftFormula,rightFormula,loopIndex):
+    return NOT_handler(U_handler(NOT_handler(leftFormula),NOT_handler(rightFormula),loopIndex))
 
 def F_handler(subformula,loopIndex):
     trueFormula = [True] * (len(subformula))
