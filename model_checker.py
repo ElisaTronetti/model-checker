@@ -30,8 +30,8 @@ def check_formula_satisfaction(truthTable):
 	if all(truthTable):
 		return True
 	else:
-		print("The LTL formula is not satisfied in the following state indexes ",
-		[i for i, n in enumerate(truthTable) if n])
+		print("The LTL formula is not satisfied in the following state lines ",
+		[i + 2 for i, n in enumerate(truthTable) if not n])
 		return False
 
 """ Recursive method used to extract all the subformulas from the AST. """
