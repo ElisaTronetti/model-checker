@@ -7,7 +7,7 @@ def NOT_handler(subformula):
     return truthTable
 
 def X_handler(subformula,loopIndex):
-    truthTable = subformula
+    truthTable = subformula.copy()
     truthTable.pop(0)
     #the last element of the table is based on the first state of the loop
     truthTable.append(subformula[loopIndex])
