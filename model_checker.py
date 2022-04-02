@@ -23,15 +23,17 @@ def evaluate(path,form):
 	states = parsedPath.path
 	loopIndex = parsedPath.total - parsedPath.loop
 	table = _formula_expansion(subformulas, states, loopIndex)
-	_,truth = table[len(table) - 1] #takes the last row of the formula expansions
-	return check_formula_satisfaction(truth) #return if the LTL formula is satisfied
+	return check_formula_satisfaction(table) #return if the LTL formula is satisfied
 
-def check_formula_satisfaction(truthTable):
-	if truthTable[0]:
+""" Check if the formula is valid by checking the first state and return the states where is not valid if any exist. """
+def check_formula_satisfaction(table):
+	_,truth = table[len(table) - 1] #takes the last row of the formula expansions
+	if truth[0]:
 		return True
 	else:
+		_,false = table[len(table) - 2] #find where the formula is not valid
 		print("The LTL formula is not satisfied in the following state lines ",
-		[i + 2 for i, n in enumerate(truthTable) if not n])
+		[i + 2 for i, n in enumerate(false) if not n])
 		return False
 
 """ Recursive method used to extract all the subformulas from the AST. """
