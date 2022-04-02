@@ -1,4 +1,4 @@
-from operator import le
+from operator import le, truth
 from re import S, sub
 from interface import parse, getpath
 from operators import AND_handler, F_handler, G_handler, IMPL_handler, NOT_handler, OR_handler, R_handler, U_handler, W_handler, X_handler
@@ -27,7 +27,7 @@ def evaluate(path,form):
 	return check_formula_satisfaction(truth) #return if the LTL formula is satisfied
 
 def check_formula_satisfaction(truthTable):
-	if all(truthTable):
+	if truthTable[0]:
 		return True
 	else:
 		print("The LTL formula is not satisfied in the following state lines ",
